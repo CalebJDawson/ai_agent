@@ -1,4 +1,5 @@
 import os
+import argparse
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -12,14 +13,18 @@ client = OpenAI(
     api_key=api_key,
 )
 
+parser = argparse.ArgumentParser(description="AI Agent")
+parser.add_argument("user_message", type=str, help="Please type a message.")
+args = parser.parse_args()
+
 response = client.chat.completions.create(
     model="openrouter/free",
     messages=[
-        {
-            "role": "user",
-            "content": "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum.",
-        }
-    ],
+            {
+                "role": "user",
+                "content": args.user_message,
+            }
+        ],
 )
 
 if response.usage == None:

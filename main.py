@@ -17,14 +17,13 @@ parser = argparse.ArgumentParser(description="AI Agent")
 parser.add_argument("user_message", type=str, help="Please type a message.")
 args = parser.parse_args()
 
+messages = [
+        {"role": "user", "content": args.user_message},
+    ]
+
 response = client.chat.completions.create(
     model="openrouter/free",
-    messages=[
-            {
-                "role": "user",
-                "content": args.user_message,
-            }
-        ],
+    messages=messages,
 )
 
 if response.usage == None:

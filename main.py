@@ -14,7 +14,8 @@ client = OpenAI(
 )
 
 parser = argparse.ArgumentParser(description="AI Agent")
-parser.add_argument("user_message", type=str, help="Please type a message.")
+parser.add_argument("user_message", type=str, help="The user provided message")
+parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
 args = parser.parse_args()
 
 messages = [
@@ -28,8 +29,10 @@ response = client.chat.completions.create(
 
 if response.usage == None:
     raise RuntimeError("API request failed.")
-print(f"Prompt tokens: {response.usage.prompt_tokens}")
-print(f"Response tokens: {response.usage.completion_tokens}")
+if args.verbose == True:
+    print(f"User prompt: {args.user_message}")
+    print(f"Prompt tokens: {response.usage.prompt_tokens}")
+    print(f"Response tokens: {response.usage.completion_tokens}")
 print(response.choices[0].message.content)
 
 def main():
